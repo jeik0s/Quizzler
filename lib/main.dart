@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'question.dart';
 
 void main() {
   runApp(Quizzler());
@@ -31,16 +32,10 @@ class _QuizPageState extends State<QuizPage> {
   
   List<Widget> scoreKeeper = [];
 
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.'
-  ];
-
-  List<bool> answer = [
-    false,
-    true,
-    true,
+  List<Question> questionsBank = [
+    Question(question: "You can lead a cow down stairs but not up stairs.", answer: false),
+    Question(question: "Approximately one quarter of human bones are in the feet.", answer: true),
+    Question(question: "A slug\'s blood is green.", answer: true)
   ];
 
   int questionNo = 0;
@@ -56,7 +51,7 @@ class _QuizPageState extends State<QuizPage> {
             child: Container(
               alignment: Alignment.center,
               child: Text(
-                questions[questionNo],
+                questionsBank[questionNo].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white,
                 fontSize: 20,
@@ -78,7 +73,7 @@ class _QuizPageState extends State<QuizPage> {
                       setState(() {
 
                         // TODO: fix problem with getting out of List
-                        bool correctAnswer = answer[questionNo];
+                        bool correctAnswer = questionsBank[questionNo].questionAnswer;
                         if(correctAnswer)
                           scoreKeeper.add(Icon(Icons.check, color: Colors.green));
                         else
@@ -104,7 +99,7 @@ class _QuizPageState extends State<QuizPage> {
                 child: TextButton(
                     onPressed: () {
                       setState(() {
-                        bool correctAnswer = answer[questionNo];
+                        bool correctAnswer = questionsBank[questionNo].questionAnswer;
                         if(!correctAnswer)
                           scoreKeeper.add(Icon(Icons.check, color: Colors.green));
                         else
@@ -121,6 +116,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
             )),
         Row(
+        
           children: scoreKeeper,
         )
       ],
