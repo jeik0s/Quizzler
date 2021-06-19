@@ -22,11 +22,42 @@ class Quizzler extends StatelessWidget {
 }
 
 class QuizPage extends StatefulWidget {
+
   @override
   _QuizPageState createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
+
+  void checkAnswer(bool correctAnser, userAnser){
+    if(correctAnser == userAnser){
+      scoreKeeper.add(
+        Icon(
+          Icons.check,
+          color: Colors.green,
+        )
+      );
+    } else {
+      scoreKeeper.add(
+          Icon(
+            Icons.close,
+            color: Colors.red,
+          )
+      );
+    }
+  }
+  
+  List<Icon> scoreKeeper = [
+    Icon(
+      Icons.check,
+      color: Colors.green,
+    ),
+    Icon(
+      Icons.close,
+      color: Colors.red,
+    )
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -56,7 +87,11 @@ class _QuizPageState extends State<QuizPage> {
                 width: double.infinity,
                 color: Colors.green[400],
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                    setState(() {
+                      checkAnswer(true,true);
+                    });
+                    },
                     child: Container(
                       child: Text(
                         "True",
@@ -73,7 +108,12 @@ class _QuizPageState extends State<QuizPage> {
                 width: double.infinity,
                 color: Colors.red[400],
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        checkAnswer(true,true);
+                      }
+                      );
+                      },
                     child: Container(
                       child: Text(
                         "False",
@@ -81,7 +121,10 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                     )),
               ),
-            ))
+            )),
+        Row(
+          children: scoreKeeper,
+        )
       ],
     );
   }
