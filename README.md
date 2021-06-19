@@ -4,7 +4,7 @@ Test your general knowledge!
 
 
 <h3>Layout ✔</h3>
-<img src="readme/layout.png">
+<img src="readme/newLayout.png">
 
 <h3>Functionality ✘</h3>
 
