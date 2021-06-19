@@ -28,35 +28,22 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-
-  void checkAnswer(bool correctAnser, userAnser){
-    if(correctAnser == userAnser){
-      scoreKeeper.add(
-        Icon(
-          Icons.check,
-          color: Colors.green,
-        )
-      );
-    } else {
-      scoreKeeper.add(
-          Icon(
-            Icons.close,
-            color: Colors.red,
-          )
-      );
-    }
-  }
   
-  List<Icon> scoreKeeper = [
-    Icon(
-      Icons.check,
-      color: Colors.green,
-    ),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    )
+  List<Widget> scoreKeeper = [];
+
+  List<String> questions = [
+    'You can lead a cow down stairs but not up stairs.',
+    'Approximately one quarter of human bones are in the feet.',
+    'A slug\'s blood is green.'
   ];
+
+  List<bool> answer = [
+    false,
+    true,
+    true,
+  ];
+
+  int questionNo = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +56,7 @@ class _QuizPageState extends State<QuizPage> {
             child: Container(
               alignment: Alignment.center,
               child: Text(
-                "You can lead a cow down stairs but not up stairs.",
+                questions[questionNo],
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white,
                 fontSize: 20,
@@ -88,9 +75,16 @@ class _QuizPageState extends State<QuizPage> {
                 color: Colors.green[400],
                 child: TextButton(
                     onPressed: () {
-                    setState(() {
-                      checkAnswer(true,true);
-                    });
+                      setState(() {
+
+                        // TODO: fix problem with getting out of List
+                        bool correctAnswer = answer[questionNo];
+                        if(correctAnswer)
+                          scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+                        else
+                          scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+                        questionNo++;
+                      });
                     },
                     child: Container(
                       child: Text(
@@ -110,9 +104,13 @@ class _QuizPageState extends State<QuizPage> {
                 child: TextButton(
                     onPressed: () {
                       setState(() {
-                        checkAnswer(true,true);
-                      }
-                      );
+                        bool correctAnswer = answer[questionNo];
+                        if(!correctAnswer)
+                          scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+                        else
+                          scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+                        questionNo++;
+                      });
                       },
                     child: Container(
                       child: Text(
