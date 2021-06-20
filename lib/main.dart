@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'quizBrain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() {
   runApp(Quizzler());
@@ -30,15 +33,27 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   
-  List<Widget> scoreKeeper = [];
-
-  List<Question> questionsBank = [
-    Question(question: "You can lead a cow down stairs but not up stairs.", answer: false),
-    Question(question: "Approximately one quarter of human bones are in the feet.", answer: true),
-    Question(question: "A slug\'s blood is green.", answer: true)
+  List<Widget> scoreKeeper = [
+    SizedBox(height: 30.0,)
   ];
 
-  int questionNo = 0;
+  void checkAnswer(bool userPickedAnser){
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+
+    setState(() {
+      if(quizBrain.isFinished()){
+        Alert(context: context, title: "THE END", desc: "Congrats, you get to the end!").show();
+        scoreKeeper.clear();
+        scoreKeeper.add(SizedBox(height: 30.0,));
+      } else {
+        if (userPickedAnser == correctAnswer)
+          scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+        else
+          scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+        quizBrain.nextQuestion();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +66,7 @@ class _QuizPageState extends State<QuizPage> {
             child: Container(
               alignment: Alignment.center,
               child: Text(
-                questionsBank[questionNo].questionText,
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white,
                 fontSize: 20,
@@ -70,16 +85,7 @@ class _QuizPageState extends State<QuizPage> {
                 color: Colors.green[400],
                 child: TextButton(
                     onPressed: () {
-                      setState(() {
-
-                        // TODO: fix problem with getting out of List
-                        bool correctAnswer = questionsBank[questionNo].questionAnswer;
-                        if(correctAnswer)
-                          scoreKeeper.add(Icon(Icons.check, color: Colors.green));
-                        else
-                          scoreKeeper.add(Icon(Icons.close, color: Colors.red));
-                        questionNo++;
-                      });
+                      checkAnswer(true);
                     },
                     child: Container(
                       child: Text(
@@ -98,14 +104,7 @@ class _QuizPageState extends State<QuizPage> {
                 color: Colors.red[400],
                 child: TextButton(
                     onPressed: () {
-                      setState(() {
-                        bool correctAnswer = questionsBank[questionNo].questionAnswer;
-                        if(!correctAnswer)
-                          scoreKeeper.add(Icon(Icons.check, color: Colors.green));
-                        else
-                          scoreKeeper.add(Icon(Icons.close, color: Colors.red));
-                        questionNo++;
-                      });
+                      checkAnswer(false);
                       },
                     child: Container(
                       child: Text(
